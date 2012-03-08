@@ -284,9 +284,7 @@ function adrotate_block($block_id, $weight = 0) {
 					echo "</pre></p>"; 
 				}			
 
-				if($weight > 0) {
-					$weightoverride = "	AND `".$prefix."adrotate`.`weight` >= '$weight'";
-				}
+				$weightoverride = ($weight > 0) ? "	AND `".$prefix."adrotate`.`weight` >= '$weight'" : "";
 
 				// Get all ads in all groups and process them in an array
 				$results = array();
