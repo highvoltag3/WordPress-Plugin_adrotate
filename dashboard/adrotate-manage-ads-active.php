@@ -1,5 +1,5 @@
 <?php
-/*  
+/*
 Copyright 2010-2012 Arnan de Gans - AJdG Solutions (email : info@ajdg.net)
 */
 ?>
@@ -43,7 +43,7 @@ Copyright 2010-2012 Arnan de Gans - AJdG Solutions (email : info@ajdg.net)
 			</select>
 			<input type="submit" id="post-query-submit" name="adrotate_order_submit" value="Sort" class="button-secondary" />
 		</div>
-	
+
 		<br class="clear" />
 	</div>
 
@@ -72,30 +72,30 @@ Copyright 2010-2012 Arnan de Gans - AJdG Solutions (email : info@ajdg.net)
 			$stats_today = $wpdb->get_row("SELECT `clicks`, `impressions` FROM `".$wpdb->prefix."adrotate_stats_tracker` WHERE `ad` = '".$banner['id']."' AND `thetime` = '$today';");
 
 			// Prevent gaps in display
-			if($stats->impressions == 0) { 
+			if($stats->impressions == 0) {
 				$impressions = 0;
 			} else {
 				$impressions = $stats->impressions;
 			}
-			
-			if($stats_today->impressions == 0) { 
+
+			if(is_null($stats_today) || $stats_today->impressions == 0) {
 				$todayimpressions = 0;
 			} else {
 				$todayimpressions = $stats_today->impressions;
 			}
-			
+
 			if($banner['tracker'] == 'Y') {
-				$ctr = adrotate_ctr($stats->clicks, $stats->impressions);						
+				$ctr = adrotate_ctr($stats->clicks, $stats->impressions);
 				$ctr = $ctr.' %';
 
-				if($stats->clicks == 0) { 
+				if($stats->clicks == 0) {
 					$clicks = 0;
-				} else { 
+				} else {
 					$clicks = $stats->clicks;
 				}
-				if($stats_today->clicks == 0) { 
+				if($stats_today->clicks == 0) {
 					$todayclicks = 0;
-				} else { 
+				} else {
 					$todayclicks = $stats_today->clicks;
 				}
 			} else {
@@ -105,27 +105,27 @@ Copyright 2010-2012 Arnan de Gans - AJdG Solutions (email : info@ajdg.net)
 			if($adrotate_debug['dashboard'] == true) {
 				echo "<tr><td>&nbsp;</td><td><strong>[DEBUG]</strong></td><td colspan='9'><pre>";
 				$memory = (memory_get_usage() / 1024 / 1024);
-				echo "Memory usage: " . round($memory, 2) ." MB <br />"; 
+				echo "Memory usage: " . round($memory, 2) ." MB <br />";
 				$peakmemory = (memory_get_peak_usage() / 1024 / 1024);
-				echo "Peak memory usage: " . round($peakmemory, 2) ." MB</pre><br />"; 
+				echo "Peak memory usage: " . round($peakmemory, 2) ." MB</pre><br />";
 				echo "Ad Specs: <pre>";
-				print_r($banner); 
-				echo "</pre>"; 
+				print_r($banner);
+				echo "</pre>";
 				echo "Stats: <pre>";
-				print_r($stats); 
-				echo "</pre>"; 
+				print_r($stats);
+				echo "</pre>";
 				echo "Stats today: <pre>";
-				print_r($stats_today); 
-				echo "</pre></td></tr>"; 
+				print_r($stats_today);
+				echo "</pre></td></tr>";
 			}
-						
+
 			$groups	= $wpdb->get_results("
-				SELECT 
-					`".$wpdb->prefix."adrotate_groups`.`name` 
-				FROM 
-					`".$wpdb->prefix."adrotate_groups`, 
-					`".$wpdb->prefix."adrotate_linkmeta` 
-				WHERE 
+				SELECT
+					`".$wpdb->prefix."adrotate_groups`.`name`
+				FROM
+					`".$wpdb->prefix."adrotate_groups`,
+					`".$wpdb->prefix."adrotate_linkmeta`
+				WHERE
 					`".$wpdb->prefix."adrotate_linkmeta`.`ad` = '".$banner['id']."'
 					AND `".$wpdb->prefix."adrotate_linkmeta`.`group` = `".$wpdb->prefix."adrotate_groups`.`id`
 					AND `".$wpdb->prefix."adrotate_linkmeta`.`block` = 0
@@ -136,12 +136,8 @@ Copyright 2010-2012 Arnan de Gans - AJdG Solutions (email : info@ajdg.net)
 				$grouplist .= $group->name.", ";
 			}
 			$grouplist = rtrim($grouplist, ", ");
-			
-			if($class != 'alternate') {
-				$class = 'alternate';
-			} else {
-				$class = '';
-			}
+
+			$class = 'alternate';
 
 			if($banner['lastactive'] <= $in7days) {
 				$errorclass = ' row_error';
